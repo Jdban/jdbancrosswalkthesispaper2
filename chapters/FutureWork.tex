@@ -1,0 +1,39 @@
+\chapter{Future Work}
+\label{future work}
+
+\section{Conversion to Phone App}
+
+The project was written entirely in the C++ libraries provided by OpenCV, which can be ported easily to a mobile app without many changes. Once the algorithm has access to phone sensors, there are opportunities to implement improvements. The current algorithm assumes that the photos are taken parallel to the horizon, but with access to a phone's sensors, the image frames could be adjusted so that they are guaranteed to be in the correct horizontal orientation. The accelerometer and gyroscope sensors could also be used to help track movement as the user crosses a crosswalk. Using sensors, anything above the horizon line could be discarded \cite{Crosswatch2Lane}. Other mobile technologies such as Project Tango's 3-D mapping hardware \cite{projectTango} could be used as well to assist with spatial awareness and other factors such as detecting obstructions that must be avoided. Once the program is converted to a mobile app, there are many interesting ways that it could progress.
+
+\section{Improving Stripelet Detection}
+
+The stripelets that are detected and fed into the neural network could have been more accurate. Different pixel grouping methods to group the detected edges into lines might result in improved stripelets, which would lead to a more accurate input for the neural network and improve detection.
+
+\section{Crosswalks With Shadows}
+
+As this project did not cover crosswalks with shadows, future work could be done to adapt the algorithm so it can work properly with crosswalks that have shadows inside of them. The current algorithm has difficulties with shadows; one issue is that the Hough line transform might have issues because shadows form strong lines, and another being that some of the neural network training parameters might be drastically different with shadows inside of the stripelets. 
+
+One option might be shadow removal algorithms that would remove the shadows so that the main algorithm doesn't have to account for them at all. This could be a good solution because it would require modifying the current algorithm, but might not the fastest. Shadow removal algorithms are quite common, so there would be many different options \cite{shadowRemoval}. Another potential solution would be to modify the current algorithm to handle the shadows. This method would likely involve modifying the Hough lines grouping, as well as using different or modified training parameters for the neural network, and require additional training data including crosswalks with different types of shadows at various times of day. 
+
+\section{More Training Parameters for Neural Network}
+
+The portion of the algorithm that uses neural networks to predict whether or not stripelets are part of the crosswalk would benefit from more investigation into new metrics that would aid the neural network. Investigating new parameters is not a costly procedure in terms of time, and it is not difficult to discover whether a training parameter is working well or not after a single attempt, so it would be worth the investment.  
+
+\section{Improving Detection of Crosswalk Boundary Lines}
+
+Ideally, the algorithm could be improved in detection of the edges of the crosswalk in order to assist the user in navigating across the intersection. One large improvement would be to trend the lines and values along multiple sequential frames to give a more accurate measurement. More experimentation could lead to better methods of doing this as well. 
+
+\section{Use Neural Network for Comparing Two Stripelets in Crosswalk Detection}
+
+Currently, the algorithm is using a few different metrics in order to predict whether two stripelets could be a part of the same crosswalk or not. A neural network could be applied to this decision instead, in order to potentially garner a better result. The same parameters that are being manually used currently would be a good starting point for neural network parameters, as well as the other parameters currently being used by the neural network for stripelet prediction. 
+
+\section{Performance Improvements}
+
+The algorithm contains some areas where the performance could be improved. In this proof of concept, speed isn't as important, so the algorithm is not as optimized as it could be. If it is ported to a phone app, the optimizations would become necessary for a real world usage scenario.
+
+\subsection{Multithreading}
+One specific improvement would be to take advantage of multiple CPU cores in order to process multiple frames at the same time. This would improve the throughput and allow greater accuracy due being able to quickly to average the results of frames that are immediately next to each other.
+The current implementation running on a decent PC can run at around 1.6 frames per second, and would scale linearly with the number of cores, so if one core is currently 1.6 frames per second, then two cores would be 3.2 frames per second, thus multithreading would give a large performance boost for this application. Multithreading would also be extremely beneficial for the crosswalk side edge detection, because running multiple sequential frames at the same time would allow a more accurate prediction.
+
+\subsection{Finding the Smallest Image Size Necessary}
+Another improvement would be to try to find the smallest image size necessary for the algorithm to detect the position of the crosswalk. The smaller the image is, the faster the processing time will be because there are fewer pixels for every operation. This could be discovered by running the algorithm on smaller and smaller crosswalks and finding out when the predictions start degrading to an unacceptable level. The performance would drastically improve, because as the image dimensions are cut in half, the number of pixels are divided by four, which scales almost directly with the runtime because many operations are performed on each pixel, and those operation's runtimes would divided by four. 
