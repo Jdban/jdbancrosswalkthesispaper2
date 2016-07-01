@@ -1,9 +1,9 @@
 \documentclass[12pt]{ucthesis}
 
 \usepackage{etex}
+
 \usepackage[morefloats=125]{morefloats}
 \usepackage[hyphens]{url}
-\usepackage[breaklinks=true]{hyperref}
 \usepackage{subfig}
 \usepackage{graphicx}
 \usepackage{tabularx}
@@ -26,19 +26,26 @@
 \usepackage{multirow}
 \usepackage{bigstrut}
 \usepackage[tableposition=top]{caption}
+\usepackage{ifthen}
 
 \usepackage{float}
 \floatstyle{plaintop}
 \restylefloat{table}
+
+\usepackage[breaklinks=true,hidelinks]{hyperref} %Make sure this \usepackage is the last one - http://tex.stackexchange.com/a/3098
+%\usepackage[options]{nohyperref} %uncomment this to disable hyperlinks
+
+
 
 \makeindex
 \makeglossaries
 
 % Shrink the size of headers
 \titleformat{\chapter}[display]
-        {\normalfont\normalsize\centering}{\chaptertitlename\ \thechapter}{0pt}{\normalsize\uppercase}
-        \titlespacing*{\chapter}
-{0pt}{-20pt}{4.3ex plus .2ex}
+        {\normalfont\normalsize\centering}
+        {\ifthenelse{\equal{\thechapter}{A}}{APPENDICES\\[4.3ex]}{}\chaptertitlename\ \thechapter}
+        {0pt}{\normalsize\uppercase}
+\titlespacing*{\chapter}{0pt}{-20pt}{4.3ex plus .2ex}
 
 
 \titleformat*{\section}{\normalsize\bfseries}

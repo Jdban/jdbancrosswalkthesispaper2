@@ -812,6 +812,7 @@ Thesis Committee Chair
 
 %% Kludge to get multiple appendices lettered rather than numbered %%
 %% Added by John T. Whelan 1996 June 21                            %%
+
 \newcommand{\appendixon}{
     \def\thesection{\thechapter.\Alph{section}}
     \setcounter{section}{0}
